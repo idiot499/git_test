@@ -3,7 +3,7 @@
 #define SOBELLOCATE_H
 
 #include "PlateLocate.h"
-
+// 这是一行注释
 class SobelLocate : public PlateLocate
 {
 public:

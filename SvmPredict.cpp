@@ -20,26 +20,26 @@ SvmPredict::~SvmPredict()
 void SvmPredict::doPredict(vector<Mat> candi_plates, Mat& final_plate)
 {
 	Mat plate;
-	float score;//svm ÆÀ·Ö
+	float score;//svm ï¿½ï¿½ï¿½ï¿½
 	float minScore = FLT_MAX;
 	int index = -1;
 	for (int i = 0; i < candi_plates.size(); i++)
 	{
 		plate = candi_plates[i];
-		//Ô¤´¦Àí
+		//Ô¤ï¿½ï¿½ï¿½ï¿½
 		Mat gray;
 		cvtColor(plate, gray, COLOR_BGR2GRAY);
 		Mat shold;
 		threshold(gray, shold, 0, 255, THRESH_OTSU + THRESH_BINARY);
 
-		//ÌáÌØÕ÷
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Mat features;
 		getHogFeatures(svmHog, shold, features);
 		//
 		Mat sample = features.reshape(1, 1);
-		//ÌØÕ÷½»¸øsvm ²âÆÀ£¬·µ»ØÆÀ·Ö
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½svm ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		score = svm->predict(sample, noArray(), StatModel::Flags::RAW_OUTPUT);
-		//printf("svm ºòÑ¡³µÅÆ %d , ÆÀ·ÖÊÇ£º%f\n", i, score);
+		//printf("svm ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ %d , ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½%f\n", i, score);
 		if (score < minScore)
 		{
 			minScore = score;
@@ -52,18 +52,18 @@ void SvmPredict::doPredict(vector<Mat> candi_plates, Mat& final_plate)
 	if (index >= 0)
 	{
 		final_plate = candi_plates[index].clone();
-		/*imshow("svm×îÖÕºòÑ¡³µÅÆ", final_plate);
+		/*imshow("svmï¿½ï¿½ï¿½Õºï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½", final_plate);
 		waitKey();*/
 	}
 }
 
 void SvmPredict::getHogFeatures(HOGDescriptor* hog, Mat src, Mat& dst)
 {
-	//¹éÒ»»¯
+	//ï¿½ï¿½Ò»ï¿½ï¿½
 	Mat trainImg = Mat(hog->winSize, CV_32S);
 	resize(src, trainImg, hog->winSize);
 
-	//¼ÆËãÌØÕ÷
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	vector<float> descriptor;
 	hog->compute(trainImg, descriptor, hog->winSize);
 
